@@ -1,3 +1,5 @@
+package acceptance;
+
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
@@ -8,4 +10,5 @@ import org.junit.runner.RunWith;
         glue = {"acceptance.glue"},
         snippets = CucumberOptions.SnippetType.CAMELCASE)
 public class AcceptanceTestRunner {
+
 }

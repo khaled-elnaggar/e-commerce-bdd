@@ -1,6 +1,9 @@
 package acceptance.glue;
 
+import acceptance.helper.CucumberTestHelper;
+import acceptance.helper.TestHelper;
 import io.cucumber.java.Before;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -8,13 +11,11 @@ import io.cucumber.java.en.When;
 import org.example.application.gateways.InventoryGateway;
 import org.example.application.gateways.PaymentGateway;
 import org.example.application.gateways.repository.ReceiptRepository;
-import org.example.application.usecases.CheckoutUseCase;
-import org.example.application.usecases.CheckoutUseCaseImpl;
 import org.example.infrastructure.httpclients.inventory.ProductInfo;
 import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
 import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
 import org.example.presentation.rest.dto.*;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -29,23 +30,31 @@ public class CheckoutStepsTest {
   private final String authorizationToken = "12345689";
   private final String transactionId = "9b8201fe-8330-4d95-9e7f-8877488858b3";
 
-
   private final OrderRequest orderRequest = new OrderRequest();
   private Receipt receipt;
 
-  static CheckoutUseCase checkoutUseCase;
-  static InventoryGateway inventoryGateway;
-  static PaymentGateway paymentGateway;
-  static ReceiptRepository receiptRepository;
+  private static TestHelper testHelper;
+
+
+  @Autowired
+  private World world;
+
+  private InventoryGateway inventoryGateway;
+  private PaymentGateway paymentGateway;
+  private ReceiptRepository receiptRepository;
+
+
+  @BeforeAll
+  public static void beforeAll() {
+    testHelper = new CucumberTestHelper();
+
+  }
 
   @Before
-  public static void before() {
-    inventoryGateway = Mockito.mock(InventoryGateway.class);
-    paymentGateway = Mockito.mock(PaymentGateway.class);
-    receiptRepository = Mockito.mock(ReceiptRepository.class);
-
-    checkoutUseCase = new CheckoutUseCaseImpl(inventoryGateway, paymentGateway,
-            receiptRepository);
+  public void before() {
+    inventoryGateway = World.inventoryGateway;
+    paymentGateway = World.paymentGateway;
+    receiptRepository = World.receiptRepository;
   }
 
   @Given("the customer is signed in")
@@ -77,7 +86,7 @@ public class CheckoutStepsTest {
     given(paymentGateway.makePayment(eq(authorizationToken), any(PaymentAmount.class)))
             .willReturn(paymentDetails);
 
-    receipt = checkoutUseCase.checkout(orderRequest);
+    receipt = testHelper.checkout(orderRequest);
   }
 
   @Then("the order receipt should be generated successfully with total price = {int}")
