@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CucumberTestHelper extends SpringTestRunner implements TestHelper {
+public class UseCaseTestHelper extends SpringTestRunner implements TestHelper {
   @Autowired
   private CheckoutUseCase checkoutUseCase;
 

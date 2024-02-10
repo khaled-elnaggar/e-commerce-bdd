@@ -1,10 +1,6 @@
 package acceptance.glue;
 
-import acceptance.helper.CucumberTestHelper;
-import acceptance.helper.RestTestHelper;
 import acceptance.helper.TestHelper;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -34,15 +30,8 @@ public class CheckoutStepsTest {
   private final OrderRequest orderRequest = new OrderRequest();
   private Receipt receipt;
 
-  private static TestHelper testHelper;
-
-
   @Autowired
-  RestTestHelper restTestHelper;
-
-  @Autowired
-  CucumberTestHelper cucumberTestHelper;
-
+  private TestHelper testHelper;
 
   @Autowired
   private InventoryGateway inventoryGateway;
@@ -52,25 +41,10 @@ public class CheckoutStepsTest {
   private ReceiptRepository receiptRepository;
 
 
-  @BeforeAll
-  public static void beforeAll() {
-    System.out.println("Hello");
-//    testHelper = restTestHelper;
-  }
-
-  @Before
-  public void before() {
-    testHelper = cucumberTestHelper;
-//    inventoryGateway = Mockito.mock(InventoryGateway.class);
-//    paymentGateway = Mockito.mock(PaymentGateway.class);
-//    receiptRepository = Mockito.mock(ReceiptRepository.class);
-  }
-
   @Given("the customer is signed in")
   public void theCustomerIsSignedIn() {
     orderRequest.setUserAuthorizationToken(authorizationToken);
   }
-
 
   @And("the customer has valid payment information")
   public void theCustomerIssuesAValidPaymentWithTheFollowingDetails() {
@@ -106,4 +80,3 @@ public class CheckoutStepsTest {
     assertEquals(price, receipt.getPaidAmount());
   }
 }
-

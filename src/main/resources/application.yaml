@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/checkout
+    password: root
+    username: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+
+external-services:
+  authorization: http://localhost:8040
+  inventory: http://localhost:8050
+  notifications: http://localhost:8060
+  payments: http://localhost:8070

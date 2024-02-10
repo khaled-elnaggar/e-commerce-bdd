@@ -14,11 +14,10 @@ import org.springframework.stereotype.Component;
 @Component
 @ScenarioScope
 public class RestTestHelper extends SpringTestRunner implements TestHelper {
-
-  private final String url = "/checkout";
-
   @Autowired
   private TestRestTemplate restTemplate;
+
+  private final String url = "/checkout";
 
   @Override
   public Receipt checkout(OrderRequest orderRequest) {
