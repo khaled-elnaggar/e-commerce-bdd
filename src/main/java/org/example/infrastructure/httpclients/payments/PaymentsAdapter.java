@@ -2,7 +2,7 @@ package org.example.infrastructure.httpclients.payments;
 
 import org.example.application.gateways.PaymentGateway;
 import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
-import org.example.infrastructure.httpclients.payments.dto.SuccessfulPaymentDetails;
+import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +14,7 @@ public class PaymentsAdapter implements PaymentGateway {
   }
 
   @Override
-  public SuccessfulPaymentDetails makePayment(String authorization, PaymentAmount amount) {
+  public PaymentDetails makePayment(String authorization, PaymentAmount amount) {
     return paymentsClient.makePayment(authorization, amount);
   }
 }

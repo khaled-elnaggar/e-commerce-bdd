@@ -1,6 +1,6 @@
 package acceptance.glue;
 
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -11,7 +11,8 @@ import org.example.application.gateways.repository.ReceiptRepository;
 import org.example.application.usecases.CheckoutUseCase;
 import org.example.application.usecases.CheckoutUseCaseImpl;
 import org.example.infrastructure.httpclients.inventory.ProductInfo;
-import org.example.infrastructure.httpclients.payments.dto.SuccessfulPaymentDetails;
+import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
+import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
 import org.example.presentation.rest.dto.*;
 import org.mockito.Mockito;
 
@@ -19,33 +20,26 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 public class CheckoutStepsTest {
 
-  private final String userAuthorization = "12345689";
+  private final String authorizationToken = "12345689";
   private final String transactionId = "9b8201fe-8330-4d95-9e7f-8877488858b3";
-  private final String orderId = "orderId-123";
 
 
-  private OrderRequest orderRequest = new OrderRequest(orderId);
+  private final OrderRequest orderRequest = new OrderRequest();
   private Receipt receipt;
-  private boolean invoked = false;
-
-  private void invoke() {
-    if (invoked) return;
-    invoked = true;
-    receipt = checkoutUseCase.checkout(orderRequest, userAuthorization);
-  }
 
   static CheckoutUseCase checkoutUseCase;
   static InventoryGateway inventoryGateway;
   static PaymentGateway paymentGateway;
   static ReceiptRepository receiptRepository;
 
-  @BeforeAll
-  public static void beforeAll() {
+  @Before
+  public static void before() {
     inventoryGateway = Mockito.mock(InventoryGateway.class);
     paymentGateway = Mockito.mock(PaymentGateway.class);
     receiptRepository = Mockito.mock(ReceiptRepository.class);
@@ -56,18 +50,12 @@ public class CheckoutStepsTest {
 
   @Given("the customer is signed in")
   public void theCustomerIsSignedIn() {
-    //TODO set authentication token in request and remove authentication service
-//    doNothing().when(authGateway).authorizeUser(userAuthorization);
-
+    orderRequest.setUserAuthorizationToken(authorizationToken);
   }
 
 
   @And("the customer has valid payment information")
   public void theCustomerIssuesAValidPaymentWithTheFollowingDetails() {
-    //TODO this should be empty
-//    SuccessfulPaymentDetails successfulPaymentDetails = new SuccessfulPaymentDetails(transactionId);
-//    given(paymentGateway.makePayment(eq(userAuthorization), any(PaymentAmount.class)))
-//            .willReturn(successfulPaymentDetails);
   }
 
   @And("the following items are in stock:")
@@ -85,18 +73,18 @@ public class CheckoutStepsTest {
 
   @When("the customer proceeds to checkout")
   public void theCustomerProceedsToCheckout() {
+    PaymentDetails paymentDetails = new PaymentDetails(transactionId);
+    given(paymentGateway.makePayment(eq(authorizationToken), any(PaymentAmount.class)))
+            .willReturn(paymentDetails);
+
+    receipt = checkoutUseCase.checkout(orderRequest);
   }
 
   @Then("the order receipt should be generated successfully with total price = {int}")
   public void theOrderReceiptShouldBeGeneratedSuccessfullyWithTotalPrice(int price) {
-    // verify on inventory and payment gateways
-    // verify(receiptRepository).saveReceipt(any(SuccessfulOrder.class));
-    SuccessfulOrder expectedOrder = new SuccessfulOrder(orderId, null, price);
+    Order expectedOrder = new Order(new PaymentDetails(transactionId), price);
+    verify(receiptRepository).saveReceipt(expectedOrder);
 
-    given(receiptRepository.saveReceipt(expectedOrder))
-            .willReturn(new Receipt(orderId, transactionId, price));
-
-    invoke();
     assertEquals(price, receipt.getPaidAmount());
   }
 }

@@ -6,7 +6,7 @@ import org.example.application.gateways.repository.ReceiptRepository;
 import org.example.common.ServiceException;
 import org.example.infrastructure.httpclients.inventory.ProductInfo;
 import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
-import org.example.infrastructure.httpclients.payments.dto.SuccessfulPaymentDetails;
+import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
 import org.example.presentation.rest.dto.*;
 import org.springframework.http.HttpStatus;
 
@@ -25,12 +25,13 @@ public class CheckoutUseCaseImpl implements CheckoutUseCase {
   }
 
   @Override
-  public Receipt checkout(OrderRequest orderRequest, String authorization) {
+  public Receipt checkout(OrderRequest orderRequest) {
     int amountToBePaid = calculateTotalCost(orderRequest);
 
-    SuccessfulPaymentDetails successfulPaymentDetails = paymentGateway.makePayment(authorization, new PaymentAmount(amountToBePaid));
-    SuccessfulOrder successfulOrder = new SuccessfulOrder(orderRequest.getOrderId(), successfulPaymentDetails, amountToBePaid);
-    return receiptRepository.saveReceipt(successfulOrder);
+    PaymentDetails paymentDetails = paymentGateway.makePayment(orderRequest.getUserAuthorizationToken(), new PaymentAmount(amountToBePaid));
+    Order order = new Order(paymentDetails, amountToBePaid);
+    receiptRepository.saveReceipt(order);
+    return new Receipt(paymentDetails.getTransactionId(), amountToBePaid);
   }
 
   private int calculateTotalCost(OrderRequest orderRequest) {

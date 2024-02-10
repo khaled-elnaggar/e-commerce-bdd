@@ -2,30 +2,27 @@ package org.example.infrastructure.persistence.mysql;
 
 import lombok.Data;
 import org.example.presentation.rest.dto.Receipt;
-import org.example.presentation.rest.dto.SuccessfulOrder;
+import org.example.presentation.rest.dto.Order;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
 @Table(name = "receipt")
 public class ReceiptEntity {
   @Id
-  private String id;
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  private long id;
   private String transactionId;
   private int paidAmount;
 
-  public ReceiptEntity(SuccessfulOrder successfulOrder) {
-    this.id = successfulOrder.getOrderId();
-    this.transactionId = successfulOrder.getPaymentDetails().getTransactionId();
-    this.paidAmount = successfulOrder.getPaidAmount();
+  public ReceiptEntity(Order order) {
+    this.transactionId = order.getPaymentDetails().getTransactionId();
+    this.paidAmount = order.getPaidAmount();
   }
 
   public Receipt toUseCaseModel() {
     return Receipt.builder()
-            .id(this.id)
             .transactionId(this.transactionId)
             .paidAmount(this.paidAmount)
             .build();

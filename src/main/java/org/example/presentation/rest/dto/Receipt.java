@@ -9,7 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class Receipt {
-  private String id;
   private String transactionId;
   private int paidAmount;
 }

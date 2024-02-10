@@ -1,8 +1,8 @@
 package org.example.application.gateways.repository;
 
 import org.example.presentation.rest.dto.Receipt;
-import org.example.presentation.rest.dto.SuccessfulOrder;
+import org.example.presentation.rest.dto.Order;
 
 public interface ReceiptRepository {
-  Receipt saveReceipt(SuccessfulOrder receipt);
+  Receipt saveReceipt(Order receipt);
 }

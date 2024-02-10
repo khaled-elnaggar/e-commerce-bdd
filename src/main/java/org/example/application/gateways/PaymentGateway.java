@@ -1,8 +1,8 @@
 package org.example.application.gateways;
 
 import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
-import org.example.infrastructure.httpclients.payments.dto.SuccessfulPaymentDetails;
+import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
 
 public interface PaymentGateway {
-  SuccessfulPaymentDetails makePayment(String authorization, PaymentAmount order);
+  PaymentDetails makePayment(String authorization, PaymentAmount order);
 }
