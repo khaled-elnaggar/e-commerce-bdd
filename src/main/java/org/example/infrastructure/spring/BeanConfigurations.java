@@ -16,8 +16,8 @@ public class BeanConfigurations {
   public CheckoutUseCase checkoutUseCase(AuthGateway authService, InventoryGateway inventoryService,
                                          PaymentGateway paymentService, NotificationsGateway notificationsService,
                                          ReceiptRepository receiptRepository) {
-    return new CheckoutUseCaseImpl(authService, inventoryService, paymentService,
-            notificationsService, receiptRepository);
+    return new CheckoutUseCaseImpl(inventoryService, paymentService,
+            receiptRepository);
 
   }
 

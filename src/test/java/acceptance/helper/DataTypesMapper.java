@@ -18,8 +18,8 @@ public class DataTypesMapper {
   public ProductInfo toRequestedProduct(Map<String, String> entry) {
     return new ProductInfo(
             entry.get("Item"),
-            parseInt(entry.get("Price")),
-            parseInt(entry.get("Quantity")));
+            parseInt(entry.get("Quantity")),
+            parseInt(entry.get("Price")));
   }
 
   private int parseInt(String n) {

@@ -1,8 +1,6 @@
 package org.example.application.usecases;
 
-import org.example.application.gateways.AuthGateway;
 import org.example.application.gateways.InventoryGateway;
-import org.example.application.gateways.NotificationsGateway;
 import org.example.application.gateways.PaymentGateway;
 import org.example.application.gateways.repository.ReceiptRepository;
 import org.example.common.ServiceException;
@@ -16,30 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutUseCaseImpl implements CheckoutUseCase {
-  private final AuthGateway authGateway;
   private final InventoryGateway inventoryGateway;
   private final PaymentGateway paymentGateway;
-  private final NotificationsGateway notificationsGateway;
   private final ReceiptRepository receiptRepository;
 
-  public CheckoutUseCaseImpl(AuthGateway authGateway, InventoryGateway inventoryGateway, PaymentGateway paymentGateway, NotificationsGateway notificationsGateway, ReceiptRepository receiptRepository) {
-    this.authGateway = authGateway;
+  public CheckoutUseCaseImpl(InventoryGateway inventoryGateway, PaymentGateway paymentGateway, ReceiptRepository receiptRepository) {
     this.inventoryGateway = inventoryGateway;
     this.paymentGateway = paymentGateway;
-    this.notificationsGateway = notificationsGateway;
     this.receiptRepository = receiptRepository;
   }
 
   @Override
   public Receipt checkout(OrderRequest orderRequest, String authorization) {
-    authGateway.authorizeUser(authorization);
     int amountToBePaid = calculateTotalCost(orderRequest);
 
     SuccessfulPaymentDetails successfulPaymentDetails = paymentGateway.makePayment(authorization, new PaymentAmount(amountToBePaid));
     SuccessfulOrder successfulOrder = new SuccessfulOrder(orderRequest.getOrderId(), successfulPaymentDetails, amountToBePaid);
-    Receipt receipt = receiptRepository.saveReceipt(successfulOrder);
-    notificationsGateway.notifyUser(authorization, receipt);
-    return receipt;
+    return receiptRepository.saveReceipt(successfulOrder);
   }
 
   private int calculateTotalCost(OrderRequest orderRequest) {

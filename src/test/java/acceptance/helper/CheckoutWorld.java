@@ -23,7 +23,7 @@ public class CheckoutWorld {
   private OrderRequest orderRequest;
 
   public CheckoutWorld() {
-    this.orderRequest = new OrderRequest(ORDER_ID);
+    this.orderRequest = new OrderRequest("orderId-123");
   }
 
 
@@ -40,7 +40,7 @@ public class CheckoutWorld {
 
   public void initializeRequest() {
     HttpHeaders headers = new HttpHeaders();
-    headers.set(HttpHeaders.AUTHORIZATION, USER_AUTHORIZATION);
+    headers.set(HttpHeaders.AUTHORIZATION, "12345689");
     HttpEntity<Object> httpEntity = new HttpEntity<>(this.orderRequest, headers);
 
     request = new RestRequest(URL, HttpMethod.POST, httpEntity);
