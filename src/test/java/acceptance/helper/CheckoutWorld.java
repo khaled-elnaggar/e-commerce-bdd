@@ -4,7 +4,7 @@ import acceptance.model.ResponseMode;
 import acceptance.model.RestRequest;
 import lombok.Data;
 import org.example.presentation.rest.dto.ApiError;
-import org.example.presentation.rest.dto.Order;
+import org.example.presentation.rest.dto.OrderRequest;
 import org.example.presentation.rest.dto.Receipt;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,16 +14,16 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class PostOrderWorld {
+public class CheckoutWorld {
 
   public static final String USER_AUTHORIZATION = "12345689";
   public static final String ORDER_ID = "orderId-123";
   public static final String TRANSACTION_ID = "9b8201fe-8330-4d95-9e7f-8877488858b3";
 
-  private Order order;
+  private OrderRequest orderRequest;
 
-  public PostOrderWorld() {
-    this.order = new Order(ORDER_ID);
+  public CheckoutWorld() {
+    this.orderRequest = new OrderRequest(ORDER_ID);
   }
 
 
@@ -41,7 +41,7 @@ public class PostOrderWorld {
   public void initializeRequest() {
     HttpHeaders headers = new HttpHeaders();
     headers.set(HttpHeaders.AUTHORIZATION, USER_AUTHORIZATION);
-    HttpEntity<Object> httpEntity = new HttpEntity<>(this.order, headers);
+    HttpEntity<Object> httpEntity = new HttpEntity<>(this.orderRequest, headers);
 
     request = new RestRequest(URL, HttpMethod.POST, httpEntity);
   }

@@ -8,11 +8,8 @@ import org.example.application.gateways.repository.ReceiptRepository;
 import org.example.common.ServiceException;
 import org.example.infrastructure.httpclients.inventory.ProductInfo;
 import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
-import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
-import org.example.presentation.rest.dto.ApiError;
-import org.example.presentation.rest.dto.Order;
-import org.example.presentation.rest.dto.RequestedProduct;
-import org.example.presentation.rest.dto.Receipt;
+import org.example.infrastructure.httpclients.payments.dto.SuccessfulPaymentDetails;
+import org.example.presentation.rest.dto.*;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -34,20 +31,20 @@ public class CheckoutUseCaseImpl implements CheckoutUseCase {
   }
 
   @Override
-  public Receipt checkout(Order order, String authorization) {
+  public Receipt checkout(OrderRequest orderRequest, String authorization) {
     authGateway.authorizeUser(authorization);
-    int amountToBePaid = calculateTotalCost(order);
+    int amountToBePaid = calculateTotalCost(orderRequest);
 
-    PaymentDetails paymentDetails = paymentGateway.makePayment(authorization, new PaymentAmount(amountToBePaid));
-    order.setTransactionId(paymentDetails.getTransactionId());
-    Receipt receipt = receiptRepository.saveReceipt(order);
-    notificationsGateway.notify(authorization, receipt);
+    SuccessfulPaymentDetails successfulPaymentDetails = paymentGateway.makePayment(authorization, new PaymentAmount(amountToBePaid));
+    SuccessfulOrder successfulOrder = new SuccessfulOrder(orderRequest.getOrderId(), successfulPaymentDetails, amountToBePaid);
+    Receipt receipt = receiptRepository.saveReceipt(successfulOrder);
+    notificationsGateway.notifyUser(authorization, receipt);
     return receipt;
   }
 
-  private int calculateTotalCost(Order order) {
+  private int calculateTotalCost(OrderRequest orderRequest) {
     List<String> outOfStock = new ArrayList<>();
-    int cost = getTotalCost(order, outOfStock);
+    int cost = getTotalCost(orderRequest, outOfStock);
     validateNoItemsOutOfStock(outOfStock);
     return cost;
   }
@@ -59,9 +56,9 @@ public class CheckoutUseCaseImpl implements CheckoutUseCase {
     }
   }
 
-  private int getTotalCost(Order order, List<String> outOfStock) {
+  private int getTotalCost(OrderRequest orderRequest, List<String> outOfStock) {
     int cost = 0;
-    for (RequestedProduct requestedProduct : order.getCart().getProducts()) {
+    for (RequestedProduct requestedProduct : orderRequest.getCart().getProducts()) {
       ProductInfo availableProduct = inventoryGateway.getProductDetails(requestedProduct.getId());
       if (availableProduct.getInStock() < requestedProduct.getQuantity()) {
         outOfStock.add(requestedProduct.getId());

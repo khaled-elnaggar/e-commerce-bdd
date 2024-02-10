@@ -7,10 +7,14 @@ Feature: Checkout Process
   Scenario: Successful Checkout as Signed-In Customer
     Given the customer is signed in
     And the customer has the following items in the cart:
-      | Item      | Price | Quantity | In-stock |
-      | Product A | 5     | 1        | 5        |
-      | Product B | 3     | 3        | 3        |
+      | Item      | Quantity |
+      | Product A | 1        |
+      | Product B | 3        |
     When the customer proceeds to checkout
+    And the following items are in stock:
+      | Item      | Price | Quantity |
+      | Product A | 5     | 1        |
+      | Product B | 3     | 3        |
     And the customer issues valid payment information
     Then the order receipt should be generated successfully with total price = 14
     And the customer receives a confirmation message

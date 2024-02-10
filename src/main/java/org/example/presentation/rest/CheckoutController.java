@@ -1,7 +1,7 @@
 package org.example.presentation.rest;
 
 import org.example.application.usecases.CheckoutUseCase;
-import org.example.presentation.rest.dto.Order;
+import org.example.presentation.rest.dto.OrderRequest;
 import org.example.presentation.rest.dto.Receipt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +15,8 @@ public class CheckoutController {
   private CheckoutUseCase checkoutUseCase;
 
   @PostMapping("/checkout")
-  public Receipt checkout(@RequestBody Order order, @RequestHeader("Authorization") String authorization) {
-    return checkoutUseCase.checkout(order, authorization);
+  public Receipt checkout(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String authorization) {
+    return checkoutUseCase.checkout(orderRequest, authorization);
   }
 
 //  public static void main(String[] args) throws Exception {

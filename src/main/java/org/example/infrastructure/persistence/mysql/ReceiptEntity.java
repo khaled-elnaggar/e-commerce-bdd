@@ -1,8 +1,8 @@
 package org.example.infrastructure.persistence.mysql;
 
 import lombok.Data;
-import org.example.presentation.rest.dto.Order;
 import org.example.presentation.rest.dto.Receipt;
+import org.example.presentation.rest.dto.SuccessfulOrder;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,17 +14,20 @@ import javax.persistence.Table;
 public class ReceiptEntity {
   @Id
   private String id;
-  private double totalPaid;
+  private String transactionId;
+  private int paidAmount;
 
-  public ReceiptEntity(Order order) {
-    this.id = order.getOrderId();
-    this.totalPaid = order.getTotalPaid();
+  public ReceiptEntity(SuccessfulOrder successfulOrder) {
+    this.id = successfulOrder.getOrderId();
+    this.transactionId = successfulOrder.getPaymentDetails().getTransactionId();
+    this.paidAmount = successfulOrder.getPaidAmount();
   }
 
   public Receipt toUseCaseModel() {
     return Receipt.builder()
             .id(this.id)
-            .totalPaid(this.totalPaid)
+            .transactionId(this.transactionId)
+            .paidAmount(this.paidAmount)
             .build();
   }
 

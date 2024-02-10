@@ -59,24 +59,12 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>io.cucumber</groupId>-->
-        <!--            <artifactId>cucumber-picocontainer</artifactId>-->
-        <!--            <version>${cucumber.version}</version>-->
-        <!--        </dependency>-->
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-spring</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!--        Disabled due to error: Conflicting module versions. Module [groovy-xml is loaded in version 4.0.1 and you are trying to load version 2.5.14] -->
-        <!--        <dependency>-->
-        <!--            <groupId>io.rest-assured</groupId>-->
-        <!--            <artifactId>rest-assured</artifactId>-->
-        <!--            <version>5.3.0</version>-->
-        <!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.cucumber</groupId>-->
+<!--            <artifactId>cucumber-spring</artifactId>-->
+<!--            <version>${cucumber.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <!-- Spring -->
 
@@ -192,51 +180,52 @@
     </build>
 
 
-    <!--    <profiles>-->
-    <!--        <profile>-->
-    <!--            <id>fitnesse</id>-->
-    <!--            <build>-->
-    <!--                <plugins>-->
-    <!--                    <plugin>-->
-    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
-    <!--                        <artifactId>maven-surefire-plugin</artifactId>-->
-    <!--                        <version>3.0.0-M5</version>-->
-    <!--                        <configuration>-->
-    <!--                            <skipTests>true</skipTests>-->
-    <!--                        </configuration>-->
-    <!--                    </plugin>-->
+    <profiles>
+        <profile>
+            <id>fitnesse</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.0.0-M5</version>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
 
-    <!--                    <plugin>-->
-    <!--                        <artifactId>maven-antrun-plugin</artifactId>-->
-    <!--                        <version>3.0.0</version>-->
-    <!--                        <executions>-->
-    <!--                            <execution>-->
-    <!--                                <id>start-fitnesse</id>-->
-    <!--                                <phase>test</phase>-->
-    <!--                                <goals>-->
-    <!--                                    <goal>run</goal>-->
-    <!--                                </goals>-->
-    <!--                                <configuration>-->
-    <!--                                    <target>-->
-    <!--                                        <echo message=""/>-->
-    <!--                                        <echo message=""/>-->
-    <!--                                        <echo message="Fitnesse wiki available here:"/>-->
-    <!--                                        <echo message=""/>-->
-    <!--                                        <echo message="  http://localhost:8005/"/>-->
-    <!--                                        <echo message=""/>-->
-    <!--                                        <java classname="fitnesseMain.FitNesseMain" classpathref="maven.test.classpath"-->
-    <!--                                              fork="true">-->
-    <!--                                            <arg line="-p 8005"/>-->
-    <!--                                            <arg line="-d ."/>-->
-    <!--                                        </java>-->
-    <!--                                    </target>-->
-    <!--                                </configuration>-->
-    <!--                            </execution>-->
-    <!--                        </executions>-->
-    <!--                    </plugin>-->
-    <!--                </plugins>-->
-    <!--            </build>-->
-    <!--        </profile>-->
-    <!--    </profiles>-->
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>start-fitnesse</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo message=""/>
+                                        <echo message=""/>
+                                        <echo message="Fitnesse wiki available here:"/>
+                                        <echo message=""/>
+                                        <echo message="  http://localhost:8001/"/>
+                                        <echo message=""/>
+                                        <java classname="fitnesseMain.FitNesseMain" classpathref="maven.test.classpath"
+                                              fork="true">
+                                            <arg line="-p 8001"/>
+                                            <arg line="-d ."/>
+                                        </java>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 
 </project>

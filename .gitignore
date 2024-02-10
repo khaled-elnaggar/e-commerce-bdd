@@ -37,3 +37,32 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+*.ipr
+*.iws
+.idea
+.gradletasknamecache
+desktop.ini
+inst.log
+velocity.log*
+fitserverSentinel*
+testHistoryDirectory/
+tmp/*
+FitNesseRoot/properties
+FitNesseRoot/ErrorLogs/*
+FitNesseRoot/files/testResults/*
+FitNesseRoot/RecentChanges*
+FitNesseRoot/RerunLastFailures*.wiki
+junit*.properties
+FitNesseRoot/updateDoNotCopyOverList
+FitNesseRoot/updateList
+fitMutation/
+FitNesseRoot/**/*.zip
+FitNesseRoot/files/testResults
+FitNesseRoot/files/testProgress
+FitNesseRoot/ErrorLogs
+FitNesseRoot/FitNesse
+FitNesseRoot/RecentChanges*
+updateDoNotCopyOverList
+updateList
+properties

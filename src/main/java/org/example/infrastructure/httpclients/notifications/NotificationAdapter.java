@@ -14,7 +14,7 @@ public class NotificationAdapter implements NotificationsGateway {
   }
 
   @Override
-  public void notify(String authorization, Receipt receipt) {
+  public void notifyUser(String authorization, Receipt receipt) {
     notificationsClient.notify(authorization, receipt);
   }
 }

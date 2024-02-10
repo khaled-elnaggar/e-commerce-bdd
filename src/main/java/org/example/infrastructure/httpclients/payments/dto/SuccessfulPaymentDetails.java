@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PaymentDetails {
+public class SuccessfulPaymentDetails {
   String transactionId;
 }
