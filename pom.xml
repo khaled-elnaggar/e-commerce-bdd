@@ -103,11 +103,6 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-httpclient</artifactId>
-            <version>${feignHttpClientVersion}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
@@ -153,11 +148,20 @@
             <version>2.35.0</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.fitnesse.cucumber</groupId>-->
-<!--            <artifactId>cunesse</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.fitnesse.cucumber</groupId>
+            <artifactId>cunesse</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+            <version>${feignHttpClientVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -172,51 +176,67 @@
         </dependencies>
     </dependencyManagement>
 
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>fitnesse</id>-->
-<!--            <build>-->
-<!--                <plugins>-->
-<!--                    <plugin>-->
-<!--                        <groupId>org.apache.maven.plugins</groupId>-->
-<!--                        <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                        <version>3.0.0-M5</version>-->
-<!--                        <configuration>-->
-<!--                            <skipTests>true</skipTests>-->
-<!--                        </configuration>-->
-<!--                    </plugin>-->
 
-<!--                    <plugin>-->
-<!--                        <artifactId>maven-antrun-plugin</artifactId>-->
-<!--                        <version>3.0.0</version>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>start-fitnesse</id>-->
-<!--                                <phase>test</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>run</goal>-->
-<!--                                </goals>-->
-<!--                                <configuration>-->
-<!--                                    <target>-->
-<!--                                        <echo message=""/>-->
-<!--                                        <echo message=""/>-->
-<!--                                        <echo message="Fitnesse wiki available here:"/>-->
-<!--                                        <echo message=""/>-->
-<!--                                        <echo message="  http://localhost:8005/"/>-->
-<!--                                        <echo message=""/>-->
-<!--                                        <java classname="fitnesseMain.FitNesseMain" classpathref="maven.test.classpath"-->
-<!--                                              fork="true">-->
-<!--                                            <arg line="-p 8005"/>-->
-<!--                                            <arg line="-d ."/>-->
-<!--                                        </java>-->
-<!--                                    </target>-->
-<!--                                </configuration>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                    </plugin>-->
-<!--                </plugins>-->
-<!--            </build>-->
-<!--        </profile>-->
-<!--    </profiles>-->
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*SpringFitnesseTest.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>fitnesse</id>-->
+    <!--            <build>-->
+    <!--                <plugins>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-surefire-plugin</artifactId>-->
+    <!--                        <version>3.0.0-M5</version>-->
+    <!--                        <configuration>-->
+    <!--                            <skipTests>true</skipTests>-->
+    <!--                        </configuration>-->
+    <!--                    </plugin>-->
+
+    <!--                    <plugin>-->
+    <!--                        <artifactId>maven-antrun-plugin</artifactId>-->
+    <!--                        <version>3.0.0</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>start-fitnesse</id>-->
+    <!--                                <phase>test</phase>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>run</goal>-->
+    <!--                                </goals>-->
+    <!--                                <configuration>-->
+    <!--                                    <target>-->
+    <!--                                        <echo message=""/>-->
+    <!--                                        <echo message=""/>-->
+    <!--                                        <echo message="Fitnesse wiki available here:"/>-->
+    <!--                                        <echo message=""/>-->
+    <!--                                        <echo message="  http://localhost:8005/"/>-->
+    <!--                                        <echo message=""/>-->
+    <!--                                        <java classname="fitnesseMain.FitNesseMain" classpathref="maven.test.classpath"-->
+    <!--                                              fork="true">-->
+    <!--                                            <arg line="-p 8005"/>-->
+    <!--                                            <arg line="-d ."/>-->
+    <!--                                        </java>-->
+    <!--                                    </target>-->
+    <!--                                </configuration>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                </plugins>-->
+    <!--            </build>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 
 </project>

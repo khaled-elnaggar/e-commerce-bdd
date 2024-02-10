@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:checkout
+    password: root
+    username: root
+
+
+external-services:
+  authorization: http://localhost:8040
+  inventory: http://localhost:8050
+  notifications: http://localhost:8060
+  payments: http://localhost:8070
