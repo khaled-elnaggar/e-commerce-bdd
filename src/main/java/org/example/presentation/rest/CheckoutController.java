@@ -15,7 +15,7 @@ public class CheckoutController {
   private CheckoutUseCase checkoutUseCase;
 
   @PostMapping("/checkout")
-  public Receipt checkout(@RequestBody OrderRequest orderRequest, @RequestHeader("Authorization") String authorization) {
+  public Receipt checkout(@RequestBody OrderRequest orderRequest) {
     return checkoutUseCase.checkout(orderRequest);
   }
 

@@ -1,6 +1,7 @@
 package acceptance.glue;
 
 import acceptance.helper.CucumberTestHelper;
+import acceptance.helper.RestTestHelper;
 import acceptance.helper.TestHelper;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
@@ -37,24 +38,32 @@ public class CheckoutStepsTest {
 
 
   @Autowired
-  private World world;
+  RestTestHelper restTestHelper;
 
+  @Autowired
+  CucumberTestHelper cucumberTestHelper;
+
+
+  @Autowired
   private InventoryGateway inventoryGateway;
+  @Autowired
   private PaymentGateway paymentGateway;
+  @Autowired
   private ReceiptRepository receiptRepository;
 
 
   @BeforeAll
   public static void beforeAll() {
-    testHelper = new CucumberTestHelper();
-
+    System.out.println("Hello");
+//    testHelper = restTestHelper;
   }
 
   @Before
   public void before() {
-    inventoryGateway = World.inventoryGateway;
-    paymentGateway = World.paymentGateway;
-    receiptRepository = World.receiptRepository;
+    testHelper = cucumberTestHelper;
+//    inventoryGateway = Mockito.mock(InventoryGateway.class);
+//    paymentGateway = Mockito.mock(PaymentGateway.class);
+//    receiptRepository = Mockito.mock(ReceiptRepository.class);
   }
 
   @Given("the customer is signed in")
