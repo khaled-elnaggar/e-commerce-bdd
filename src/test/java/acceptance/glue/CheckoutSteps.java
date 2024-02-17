@@ -1,13 +1,13 @@
 package acceptance.glue;
 
+import acceptance.helper.TestHelper;
+import acceptance.helper.UseCaseTestHelper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.application.gateways.InventoryGateway;
 import org.example.application.gateways.PaymentGateway;
 import org.example.application.gateways.repository.ReceiptRepository;
-import org.example.application.usecases.CheckoutUseCase;
-import org.example.application.usecases.CheckoutUseCaseImpl;
 import org.example.infrastructure.httpclients.inventory.ProductInfo;
 import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
 import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
@@ -31,8 +31,7 @@ public class CheckoutSteps {
   PaymentGateway paymentGateway = Mockito.mock(PaymentGateway.class);
   ReceiptRepository receiptRepository = Mockito.mock(ReceiptRepository.class);
 
-  CheckoutUseCase checkoutUseCase = new CheckoutUseCaseImpl(inventoryGateway, paymentGateway, receiptRepository);
-
+  TestHelper testHelper = new UseCaseTestHelper(inventoryGateway, paymentGateway, receiptRepository);
   OrderRequest orderRequest = new OrderRequest();
   Receipt receipt;
 
@@ -63,7 +62,7 @@ public class CheckoutSteps {
   public void theCustomerProceedsToCheckout() {
     when(paymentGateway.makePayment(eq(userAuthorizationToken), any(PaymentAmount.class)))
             .thenReturn(new PaymentDetails(transactionId));
-    receipt = checkoutUseCase.checkout(orderRequest);
+    receipt = testHelper.checkout(orderRequest);
   }
 
   @Then("the order receipt should be generated successfully with total price = {int}")
