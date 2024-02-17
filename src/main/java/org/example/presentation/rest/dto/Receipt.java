@@ -9,6 +9,5 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class Receipt {
-  private String transactionId;
   private int paidAmount;
 }

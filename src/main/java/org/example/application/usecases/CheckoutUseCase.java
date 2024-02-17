@@ -1,7 +1,8 @@
 package org.example.application.usecases;
 
 import org.example.presentation.rest.dto.OrderRequest;
+import org.example.presentation.rest.dto.Receipt;
 
 public interface CheckoutUseCase {
-  void checkout(OrderRequest orderRequest);
+  Receipt checkout(OrderRequest orderRequest);
 }
