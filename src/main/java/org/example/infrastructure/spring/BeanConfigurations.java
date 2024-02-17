@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfigurations {
   @Bean
-  public CheckoutUseCase checkoutUseCase(InventoryGateway inventoryService,
-                                         PaymentGateway paymentService,
+  public CheckoutUseCase checkoutUseCase(InventoryGateway inventoryGateway,
+                                         PaymentGateway paymentGateway,
                                          ReceiptRepository receiptRepository) {
-    return new CheckoutUseCaseImpl(inventoryService);
+    return new CheckoutUseCaseImpl(inventoryGateway, paymentGateway, receiptRepository);
 
   }
 

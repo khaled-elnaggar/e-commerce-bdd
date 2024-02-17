@@ -4,27 +4,34 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.application.gateways.InventoryGateway;
+import org.example.application.gateways.PaymentGateway;
+import org.example.application.gateways.repository.ReceiptRepository;
 import org.example.application.usecases.CheckoutUseCase;
 import org.example.application.usecases.CheckoutUseCaseImpl;
 import org.example.infrastructure.httpclients.inventory.ProductInfo;
-import org.example.presentation.rest.dto.Cart;
-import org.example.presentation.rest.dto.OrderRequest;
-import org.example.presentation.rest.dto.Receipt;
-import org.example.presentation.rest.dto.RequestedProduct;
+import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
+import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
+import org.example.presentation.rest.dto.*;
 import org.mockito.Mockito;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CheckoutSteps {
 
   private final String userAuthorizationToken = "user-id";
+  private final String transactionId = "transaction-id";
 
   InventoryGateway inventoryGateway = Mockito.mock(InventoryGateway.class);
-  CheckoutUseCase checkoutUseCase = new CheckoutUseCaseImpl(inventoryGateway);
+  PaymentGateway paymentGateway = Mockito.mock(PaymentGateway.class);
+  ReceiptRepository receiptRepository = Mockito.mock(ReceiptRepository.class);
 
+  CheckoutUseCase checkoutUseCase = new CheckoutUseCaseImpl(inventoryGateway, paymentGateway, receiptRepository);
 
   OrderRequest orderRequest = new OrderRequest();
   Receipt receipt;
@@ -54,11 +61,14 @@ public class CheckoutSteps {
 
   @When("the customer proceeds to checkout")
   public void theCustomerProceedsToCheckout() {
+    when(paymentGateway.makePayment(eq(userAuthorizationToken), any(PaymentAmount.class)))
+            .thenReturn(new PaymentDetails(transactionId));
     receipt = checkoutUseCase.checkout(orderRequest);
   }
 
   @Then("the order receipt should be generated successfully with total price = {int}")
   public void theOrderReceiptShouldBeGeneratedSuccessfullyWithTotalPrice(Integer price) {
+    verify(receiptRepository).saveReceipt(any(Order.class));
     assertEquals(price, receipt.getPaidAmount());
   }
 }
