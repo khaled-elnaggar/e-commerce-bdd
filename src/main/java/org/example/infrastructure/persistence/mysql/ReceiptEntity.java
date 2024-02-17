@@ -1,7 +1,6 @@
 package org.example.infrastructure.persistence.mysql;
 
 import lombok.Data;
-import org.example.presentation.rest.dto.Receipt;
 import org.example.presentation.rest.dto.Order;
 
 import javax.persistence.*;
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "receipt")
 public class ReceiptEntity {
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String transactionId;
   private int paidAmount;
@@ -19,13 +18,6 @@ public class ReceiptEntity {
   public ReceiptEntity(Order order) {
     this.transactionId = order.getPaymentDetails().getTransactionId();
     this.paidAmount = order.getPaidAmount();
-  }
-
-  public Receipt toUseCaseModel() {
-    return Receipt.builder()
-            .transactionId(this.transactionId)
-            .paidAmount(this.paidAmount)
-            .build();
   }
 
 }

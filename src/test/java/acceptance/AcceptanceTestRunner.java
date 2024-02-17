@@ -7,8 +7,7 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = {"classpath:features"},
-        glue = {"acceptance.glue"},
-        snippets = CucumberOptions.SnippetType.CAMELCASE)
+        glue = {"acceptance"})
 public class AcceptanceTestRunner {
 
 }

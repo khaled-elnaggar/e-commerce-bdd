@@ -17,18 +17,9 @@
 
     <properties>
         <cucumber.version>7.11.1</cucumber.version>
-        <appVersion>3.7.0</appVersion>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
-        <liquibaseVersion>4.3.5</liquibaseVersion>
-        <jacocoVersion>0.8.4</jacocoVersion>
-        <skipJacoco>false</skipJacoco>
-        <libphonenumberVersion>8.3.3</libphonenumberVersion>
-        <skipJacoco>false</skipJacoco>
-        <skipDependencyCheck>false</skipDependencyCheck>
-        <dependencyCheckVersion>5.3.2</dependencyCheckVersion>
         <feignHttpClientVersion>12.2</feignHttpClientVersion>
-        <commons-validatorVersion>1.7</commons-validatorVersion>
-        <log4j2.version>2.17.0</log4j2.version>
+        <commonsValidator.version>1.7</commonsValidator.version>
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,7 +35,6 @@
             <scope>test</scope>
         </dependency>
 
-
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
@@ -59,12 +49,12 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-spring</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.cucumber</groupId>-->
+<!--            <artifactId>cucumber-spring</artifactId>-->
+<!--            <version>${cucumber.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <!-- Spring -->
 
@@ -97,7 +87,7 @@
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
-            <version>${commons-validatorVersion}</version>
+            <version>${commonsValidator.version}</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -137,11 +127,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.fitnesse.cucumber</groupId>
-            <artifactId>cunesse</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
             <version>${feignHttpClientVersion}</version>
@@ -163,69 +148,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-                <configuration>
-                    <includes>
-                        <include>**/*SpringFitnesseTest.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-
-    <profiles>
-        <profile>
-            <id>fitnesse</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M5</version>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>3.0.0</version>
-                        <executions>
-                            <execution>
-                                <id>start-fitnesse</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <target>
-                                        <echo message=""/>
-                                        <echo message=""/>
-                                        <echo message="Fitnesse wiki available here:"/>
-                                        <echo message=""/>
-                                        <echo message="  http://localhost:8001/"/>
-                                        <echo message=""/>
-                                        <java classname="fitnesseMain.FitNesseMain" classpathref="maven.test.classpath"
-                                              fork="true">
-                                            <arg line="-p 8001"/>
-                                            <arg line="-d ."/>
-                                        </java>
-                                    </target>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-
 </project>
