@@ -1,4 +1,4 @@
-package org.example.presentation.rest.dto;
+package org.example.common;
 
 
 import lombok.AllArgsConstructor;
