@@ -1,4 +1,4 @@
-package acceptance.helper;
+package acceptance.helper.mapper;
 
 import io.cucumber.java.DataTableType;
 import org.example.infrastructure.httpclients.inventory.ProductInfo;

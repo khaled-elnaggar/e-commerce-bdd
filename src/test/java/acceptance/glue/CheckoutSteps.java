@@ -1,7 +1,6 @@
 package acceptance.glue;
 
 import acceptance.helper.TestHelper;
-import acceptance.helper.UseCaseTestHelper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,7 +11,7 @@ import org.example.infrastructure.httpclients.inventory.ProductInfo;
 import org.example.infrastructure.httpclients.payments.dto.PaymentAmount;
 import org.example.infrastructure.httpclients.payments.dto.PaymentDetails;
 import org.example.presentation.rest.dto.*;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -27,11 +26,15 @@ public class CheckoutSteps {
   private final String userAuthorizationToken = "user-id";
   private final String transactionId = "transaction-id";
 
-  InventoryGateway inventoryGateway = Mockito.mock(InventoryGateway.class);
-  PaymentGateway paymentGateway = Mockito.mock(PaymentGateway.class);
-  ReceiptRepository receiptRepository = Mockito.mock(ReceiptRepository.class);
+  @Autowired
+  InventoryGateway inventoryGateway;
+  @Autowired
+  PaymentGateway paymentGateway;
+  @Autowired
+  ReceiptRepository receiptRepository;
 
-  TestHelper testHelper = new UseCaseTestHelper(inventoryGateway, paymentGateway, receiptRepository);
+  @Autowired
+  TestHelper testHelper;
   OrderRequest orderRequest = new OrderRequest();
   Receipt receipt;
 
